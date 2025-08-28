@@ -1,0 +1,1 @@
+console.log('Boxful API bootstrap ready')

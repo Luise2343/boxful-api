@@ -1,0 +1,14 @@
+# dependencias y compilados
+node_modules/
+dist/
+
+# entornos
+.env
+.env.*
+!.env.example
+
+# logs y otros
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
