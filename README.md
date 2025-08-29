@@ -111,5 +111,4 @@ src/
 
 * `.env` **no** se versiona (usa `.env.example`).
 * Datos del seed son demo; cambia credenciales si vas a publicar el repo.
-Pégalo tal cual en `README.md` y hacemos un commit rápido si quieres.
 ```
