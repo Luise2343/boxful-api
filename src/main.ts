@@ -8,7 +8,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
-  app.enableCors(); // MVP
+  app.enableCors({
+  origin: ['http://localhost:3001'],
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization']
+});
 
   const swaggerCfg = new DocumentBuilder()
     .setTitle('Boxful API')
