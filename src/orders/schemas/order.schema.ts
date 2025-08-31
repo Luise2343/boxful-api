@@ -24,10 +24,21 @@ export class Order {
   @Prop({ required: true, trim: true }) customerName!: string;
   @Prop({ required: true, trim: true }) customerPhone!: string;
   @Prop({ required: true, trim: true }) address!: string;
-  @Prop({ required: true, enum: ['PENDING', 'IN_PROGRESS', 'DELIVERED', 'CANCELLED'], default: 'PENDING' })
+
+  // NUEVO
+  @Prop({ required: true, trim: true }) department!: string;
+  @Prop({ required: true, trim: true }) municipality!: string;
+
+  @Prop({
+    required: true,
+    enum: ['PENDING', 'IN_PROGRESS', 'DELIVERED', 'CANCELLED'],
+    default: 'PENDING',
+  })
   status!: OrderStatus;
+
   @Prop({ type: [PackageSchema], validate: (v: unknown[]) => Array.isArray(v) && v.length > 0 })
   packages!: Package[];
+
   readonly createdAt!: Date;
 }
 export type OrderDocument = HydratedDocument<Order>;

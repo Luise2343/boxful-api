@@ -1,23 +1,37 @@
 import { Type } from 'class-transformer';
-import { ArrayMinSize, IsArray, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min, ValidateNested } from 'class-validator';
+import {
+  ArrayMinSize, IsArray, IsEnum, IsNotEmpty,
+  IsNumber, IsOptional, IsString, Min, ValidateNested
+} from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { OrderStatus } from '../schemas/order.schema';
 
 class DimensionsDto {
-  @IsNumber() @Min(0) l!: number;
-  @IsNumber() @Min(0) w!: number;
-  @IsNumber() @Min(0) h!: number;
+  @ApiProperty() @IsNumber() @Min(0) l!: number;
+  @ApiProperty() @IsNumber() @Min(0) w!: number;
+  @ApiProperty() @IsNumber() @Min(0) h!: number;
 }
 class PackageDto {
-  @IsString() @IsNotEmpty() description!: string;
-  @IsNumber() @Min(0) weight!: number;
+  @ApiProperty() @IsString() @IsNotEmpty() description!: string;
+  @ApiProperty() @IsNumber() @Min(0) weight!: number;
+  @ApiProperty({ type: DimensionsDto })
   @ValidateNested() @Type(() => DimensionsDto) dimensions!: DimensionsDto;
 }
+
 export class CreateOrderDto {
-  @IsString() @IsNotEmpty() customerName!: string;
-  @IsString() @IsNotEmpty() customerPhone!: string;
-  @IsString() @IsNotEmpty() address!: string;
-  @IsEnum(['PENDING','IN_PROGRESS','DELIVERED','CANCELLED']) status?: OrderStatus;
-  @IsArray() @ArrayMinSize(1)
-  @ValidateNested({ each: true }) @Type(() => PackageDto)
+  @ApiProperty() @IsString() @IsNotEmpty() customerName!: string;
+  @ApiProperty() @IsString() @IsNotEmpty() customerPhone!: string;
+  @ApiProperty() @IsString() @IsNotEmpty() address!: string;
+
+  // NUEVO
+  @ApiProperty({ example: 'San Salvador' }) @IsString() @IsNotEmpty() department!: string;
+  @ApiProperty({ example: 'San Salvador' }) @IsString() @IsNotEmpty() municipality!: string;
+
+  @ApiPropertyOptional({ enum: ['PENDING','IN_PROGRESS','DELIVERED','CANCELLED'] })
+  @IsOptional() @IsEnum(['PENDING','IN_PROGRESS','DELIVERED','CANCELLED'])
+  status?: OrderStatus;
+
+  @ApiProperty({ type: [PackageDto] })
+  @IsArray() @ArrayMinSize(1) @ValidateNested({ each: true }) @Type(() => PackageDto)
   packages!: PackageDto[];
 }
